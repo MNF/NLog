@@ -128,6 +128,7 @@
     <Compile Include="Common\InternalLoggerTests.cs" />
     <Compile Include="Common\InternalLoggerTests_Trace.cs" />
     <Compile Include="Common\LastLogEventListTarget.cs" />
+    <Compile Include="Common\TextWriterThrowingOutOfMemoryException.cs" />
     <Compile Include="Conditions\ConditionEvaluatorTests.cs" />
     <Compile Include="Conditions\ConditionParserTests.cs" />
     <Compile Include="Config\CaseSensitivityTests.cs" />

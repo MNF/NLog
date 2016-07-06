@@ -81,7 +81,6 @@ namespace NLog.Common
             LogFile = GetSetting("nlog.internalLogFile", "NLOG_INTERNAL_LOG_FILE", string.Empty);
             LogToTrace = GetSetting("nlog.internalLogToTrace", "NLOG_INTERNAL_LOG_TO_TRACE", false);
             IncludeTimestamp = GetSetting("nlog.internalLogIncludeTimestamp", "NLOG_INTERNAL_INCLUDE_TIMESTAMP", true);
-            Info("NLog internal logger initialized.");
 #else
             LogLevel = LogLevel.Info;
             LogToConsole = false;
@@ -91,6 +90,9 @@ namespace NLog.Common
 #endif
             ExceptionThrowWhenWriting = false;
             LogWriter = null;
+#if !SILVERLIGHT && !__IOS__ && !__ANDROID__
+            Info("NLog internal logger initialized."); //Write after LogWriter was reset
+#endif
         }
 
         /// <summary>

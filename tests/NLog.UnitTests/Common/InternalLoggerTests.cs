@@ -331,7 +331,34 @@ namespace NLog.UnitTests.Common
                 }
             }
         }
+        [Fact]
+        public void WriteToNonExistingFileTest()
+        {
+            using (new InternalLoggerScope())
+            {
+                var tempFile = @"\\NotExistingServer\TempFolder\log.txt";
+                InternalLogger.LogLevel = LogLevel.Trace;
+                InternalLogger.LogFile = tempFile;
 
+                InternalLogger.Log(LogLevel.Warn, "WWW");
+
+                FileInfo fi = new FileInfo(tempFile);
+                Assert.False(fi.Exists, "File '" + tempFile + "' shouldn't exist.");
+                Assert.True(InternalLogger.ExceptionThrowWhenWriting, "Exception should be thrown when writing to '" + tempFile);
+            }
+        }
+        [Fact]
+        public void SeriousExceptionDuringWriteTest()
+        {
+            using (new InternalLoggerScope())
+            {
+                LogManager.ThrowExceptions = true;
+                InternalLogger.LogLevel = LogLevel.Trace;
+                InternalLogger.LogWriter = new TextWriterThrowingOutOfMemoryException(); // only few exception including OutOfMemoryException cause throw
+
+                Assert.Throws<OutOfMemoryException>(() => InternalLogger.Log(LogLevel.Warn, "WWW"));
+            }
+        }
         [Fact]
         public void TimestampTests()
         {
